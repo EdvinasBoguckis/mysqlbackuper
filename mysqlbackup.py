@@ -1,3 +1,11 @@
+import os
+import time
+import datetime
+import pipes
+import sys
+
+print ("Usage: backup.py {host} {db name} {db user} {db user password} {backup path}")
+
 DB_HOST = sys.argv[1]
 DB_NAME = sys.argv[2]
 DB_USER = sys.argv[3]
