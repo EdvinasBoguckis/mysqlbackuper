@@ -6,11 +6,15 @@ import sys
 
 print ("Usage: backup.py {host} {db name} {db user} {db user password} {backup path}")
 
+VERSION = 1.1
+PARAM = sys.argv[1]
 DB_HOST = sys.argv[1]
 DB_NAME = sys.argv[2]
 DB_USER = sys.argv[3]
 DB_USER_PASSWORD = sys.argv[4]
 BACKUP_PATH = sys.argv[5]
+#if (PARAM == "info"):
+#    print ("Mysqlbackuper "+VERSION)
 print ("============================================================================")
 print ("Using current settings: ")
 print ("Database Host: " + DB_HOST)
