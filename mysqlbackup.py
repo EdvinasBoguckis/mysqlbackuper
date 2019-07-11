@@ -13,6 +13,7 @@ DB_NAME = sys.argv[2]
 DB_USER = sys.argv[3]
 DB_USER_PASSWORD = sys.argv[4]
 BACKUP_PATH = sys.argv[5]
+ADD_ARG = sys.argv[6]
 #if (PARAM == "info"):
 #    print ("Mysqlbackuper "+VERSION)
 print ("============================================================================")
@@ -42,9 +43,19 @@ print ("Creating full backup folder")
 db = DB_NAME
 dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + db + " > " + pipes.quote(FULLBACKUPPATH) + "/" + db + ".sql"
 os.system(dumpcmd)
-gzipcmd = "gzip " + pipes.quote(FULLBACKUPPATH) + "/" + db + ".sql"
-os.system(gzipcmd)
-
-print ("============================================================================")
-print ("Backup script completed")
-print ("Backup has been created in '" + FULLBACKUPPATH + "' directory")
+if (ADD_ARG == "--noarchive"):
+        print ("==got nozip argument, skipping archivation==")
+        print ("============================================================================")
+        print ("Backup script completed")
+        print ("Backup has been created in '" + FULLBACKUPPATH + "' directory")
+        exit()
+elif (ADD_ARG == "--archive"):
+        gzipcmd = "gzip " + pipes.quote(FULLBACKUPPATH) + "/" + db + ".sql"
+        os.system(gzipcmd)
+        print ("============================================================================")
+        print ("Backup script completed")
+        print ("Backup has been created in '" + FULLBACKUPPATH + "' directory")
+        exit()
+else:
+        print ("No argument received")
+        exit()
