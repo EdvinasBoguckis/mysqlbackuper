@@ -16,8 +16,8 @@ VERSION = 1.2
 #BACKUP_PATH = sys.argv[5]
 #ADD_ARG = sys.argv[6]
 parser = argparse.ArgumentParser()
-parser = argparse.ArgumentParser(description='Mysql Backuper ' + VERSION)
-parser = argparse.ArgumentParser(prog='mysqlbackup')
+argparse.ArgumentParser(description='Mysql Backuper ' + VERSION)
+argparse.ArgumentParser(prog='mysqlbackup')
 parser.add_argument('--archive', help='archive the resulting .sql file with gzip')
 PARAM = sys.argv[1]
 DB_HOST = sys.argv[1] 
@@ -46,10 +46,10 @@ try:
 except:
     try:
         print ("Root backup folder does not exist... creating...")
-        os.mkdir(BACKUP_PATH)
+        os.makedirs(BACKUP_PATH)
     except:
         print ("Folder already exists, skipping")
-os.mkdir(FULLBACKUPPATH)
+os.makedirs(FULLBACKUPPATH)
 print ("Creating full backup folder")
 
 db = DB_NAME
