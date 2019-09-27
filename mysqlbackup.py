@@ -3,12 +3,24 @@ import time
 import datetime
 import pipes
 import sys
+import argparse
 
 print ("Usage: backup.py {host} {db name} {db user} {db user password} {backup path}")
 
-VERSION = 1.1
+VERSION = 1.2
+#PARAM = sys.argv[1]
+#DB_HOST = sys.argv[1]
+#DB_NAME = sys.argv[2]
+#DB_USER = sys.argv[3]
+#DB_USER_PASSWORD = sys.argv[4]
+#BACKUP_PATH = sys.argv[5]
+#ADD_ARG = sys.argv[6]
+parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='Mysql Backuper ' + VERSION)
+parser = argparse.ArgumentParser(prog='mysqlbackup')
+parser.add_argument('--archive', help='archive the resulting .sql file with gzip')
 PARAM = sys.argv[1]
-DB_HOST = sys.argv[1]
+DB_HOST = sys.argv[1] 
 DB_NAME = sys.argv[2]
 DB_USER = sys.argv[3]
 DB_USER_PASSWORD = sys.argv[4]
