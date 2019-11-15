@@ -49,6 +49,24 @@ def parseconfig(filelocation):
     hide_pass = localconf['extras']['hide_pass']
     backuper(db_host, db_name, db_user, db_pass, backup_path, arc_arg, hide_pass)
     
+def showhelp():
+    print (printinfo)
+    print ("currently supported syntax: ")
+    print ("mysqlbackuper.py fromconfig *configlocation* -- Runs mysqlbackuper from a configfile")
+    print ("mysqlbackuper.py singlerun *db_host* *db_name* *db_user* *db_pass* *backup_path* *archive argument (*archive* or *noarchive*)*")
+    print ("-- Runs mysqlbackuper provided the settings from shell")
+    print ("\nmysqlbackuper.py help -- print help screen")
+    print ("mysqlbackuper.py info -- prints information about this script")
+
+def printinfo():
+    if (isdev == True):
+        printdev = "=== dev version ==="
+    if (isdev == False):
+        printdev = " \n"
+    else:
+        print ("no ifdev parameter provided! \nexiting..")
+        exit (1)
+    return ("Mysqlbackuper version "+app_version +" | branch: "+app_branch +" "+printdev +"\nCreated and maintained by Edvinas Boguckis") 
 
 def initialize():
     if (runparam == "fromconfig"):
@@ -73,7 +91,7 @@ def initialize():
 
 
 
-app_version = 0.3
+app_version = 0.4
 app_branch = "stage"
 isdev = True
 initialize()
