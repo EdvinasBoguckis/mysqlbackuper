@@ -8,6 +8,20 @@ import configparser
 runparam = sys.argv[1]
 
 def backuper (db_host, db_name, db_user, db_pass, backup_path, arc_arg, hide_pass):
+    print ("============================================================================")
+    print ("Using current settings: ")
+    print ("Database Host: " + db_host)
+    print ("Database Name: " + db_name)
+    print ("Database User: " + db_user)
+    if (hide_pass == "true"):
+        print ("Database User Password: ************")
+    elif (hide_pass == "false"):
+        print ("Database User Password: " + db_pass)
+    else:
+        print ("***hide_pass argument is invalid, not printing password***")
+        print ("Database User Password: ************")
+    print ("Backup directory: " + backup_path)
+    print ("============================================================================")
     backupdate = time.strftime('%Y%m%d-%H%M%S')
     fullpath = backup_path + '/' + backupdate
     try:
@@ -25,12 +39,14 @@ def backuper (db_host, db_name, db_user, db_pass, backup_path, arc_arg, hide_pas
     dumpcmd = "mysqldump -h " + db_host + " -u " + db_user + " -p" + db_pass + " " + db + " > " + pipes.quote(fullpath) + "/" + db + ".sql"
     os.system(dumpcmd)
     if (arc_arg == False or arc_arg == "noarchive"):
-        print ("==got noarchive argument, skipping archivation== \n============================================================================ \nBackup script completed \nBackup has been created in '" + fullpath + "' directory")
+        print ("Got noarchive argument, skipping archivation... \n============================================================================ \nBackup script completed \nBackup has been created in '" + fullpath + "' directory")
         exit(0)
     elif (arc_arg == True or arc_arg == "archive"):
+        print ("Got archive argument, archivating...")
         gzipcmd = "gzip " + pipes.quote(fullpath) + "/" + db + ".sql"
         os.system(gzipcmd)
-        print ("==got archive argument, starting archivation== \n============================================================================ \nBackup script completed \nBackup has been created in '" + fullpath + "' directory")
+        print("..OK")
+        print ("============================================================================ \nBackup script completed \nBackup has been created in '" + fullpath + "' directory")
         exit(0)
     else:
         print ("No argument archive received")
@@ -48,9 +64,9 @@ def parseconfig(filelocation):
     arc_arg = localconf['backuper']['archive']
     hide_pass = localconf['extras']['hide_pass']
     backuper(db_host, db_name, db_user, db_pass, backup_path, arc_arg, hide_pass)
-    
+
 def showhelp():
-    print (printinfo)
+    printinfo()
     print ("currently supported syntax: ")
     print ("mysqlbackuper.py fromconfig *configlocation* -- Runs mysqlbackuper from a configfile")
     print ("mysqlbackuper.py singlerun *db_host* *db_name* *db_user* *db_pass* *backup_path* *archive argument (*archive* or *noarchive*)*")
@@ -59,14 +75,7 @@ def showhelp():
     print ("mysqlbackuper.py info -- prints information about this script")
 
 def printinfo():
-    if (isdev == True):
-        printdev = "=== dev version ==="
-    if (isdev == False):
-        printdev = " \n"
-    else:
-        print ("no ifdev parameter provided! \nexiting..")
-        exit (1)
-    return ("Mysqlbackuper version "+app_version +" | branch: "+app_branch +" "+printdev +"\nCreated and maintained by Edvinas Boguckis") 
+    print ("Mysqlbackuper version "+app_version +" | branch: "+app_branch +"\nCreated and maintained by Edvinas Boguckis")
 
 def initialize():
     if (runparam == "fromconfig"):
@@ -79,7 +88,7 @@ def initialize():
         db_pass = sys.argv[5]
         backup_path = sys.argv[6]
         arc_arg = sys.argv[7]
-        hide_pass = False
+        hide_pass = "false"
         backuper(db_host, db_name, db_user, db_pass, backup_path, arc_arg, hide_pass)
     elif (runparam == "help"):
         showhelp()
@@ -89,9 +98,6 @@ def initialize():
         print ("No required arguments provided! Use help parameter for help. \nExiting..")
         exit(1)
 
-
-
-app_version = 0.4
-app_branch = "stage"
-isdev = True
+app_version = "0.6"
+app_branch = "staging"
 initialize()
