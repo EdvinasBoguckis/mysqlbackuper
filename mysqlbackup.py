@@ -24,16 +24,16 @@ def backuper (db_host, db_name, db_user, db_pass, backup_path, arc_arg, hide_pas
     db = db_name
     dumpcmd = "mysqldump -h " + db_host + " -u " + db_user + " -p" + db_pass + " " + db + " > " + pipes.quote(fullpath) + "/" + db + ".sql"
     os.system(dumpcmd)
-    if (ADD_ARG == "--noarchive"):
-        print ("==got nozip argument, skipping archivation== \n============================================================================ \nBackup script completed \nBackup has been created in '" + FULLBACKUPPATH + "' directory")
+    if (arc_arg == False or arc_arg == "noarchive"):
+        print ("==got noarchive argument, skipping archivation== \n============================================================================ \nBackup script completed \nBackup has been created in '" + fullpath + "' directory")
         exit(0)
-    elif (ADD_ARG == "--archive"):
-        gzipcmd = "gzip " + pipes.quote(FULLBACKUPPATH) + "/" + db + ".sql"
+    elif (arc_arg == True or arc_arg == "archive"):
+        gzipcmd = "gzip " + pipes.quote(fullpath) + "/" + db + ".sql"
         os.system(gzipcmd)
-        print ("==got archive argument, starting archivation== \n============================================================================ \nBackup script completed \nBackup has been created in '" + FULLBACKUPPATH + "' directory")
+        print ("==got archive argument, starting archivation== \n============================================================================ \nBackup script completed \nBackup has been created in '" + fullpath + "' directory")
         exit(0)
     else:
-        print ("No argument received")
+        print ("No argument archive received")
         exit(1)
     exit(0)
 
@@ -73,11 +73,7 @@ def initialize():
 
 
 
-
-
-
-
-app_version = 1.2
+app_version = 0.3
 app_branch = "stage"
 isdev = True
 initialize()
